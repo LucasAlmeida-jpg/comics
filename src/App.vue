@@ -1,12 +1,25 @@
-
 <template>
-     <div>
-        <Home />
-     </div>
+  <div>
+    <Home />
+  </div>
   <RouterView />
+
 </template>
 
-  <script>
-  import { RouterView } from 'vue-router'
-  import Home from './components/Home.vue'
-  </script>
+<script>
+import Home from "./components/Home.vue";
+
+export default {
+  components: {
+    Home
+  },
+  data() {
+    return {
+      teste: ''
+    }
+  }
+
+};
+</script>
+
+<style scoped></style>
