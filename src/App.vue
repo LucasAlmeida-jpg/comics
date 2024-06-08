@@ -25,7 +25,7 @@ export default {
             .then(response => {
                 if (response.data && Array.isArray(response.data)) {
                     this.products = response.data;
-                    console.log(this.products, 'aqyu');
+                    console.log('retorno da api no componente pai:', this.products );
                 }
             })
             .catch(error => {

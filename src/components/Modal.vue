@@ -125,26 +125,27 @@ export default {
 
     methods: {
         searchProducts() {
+            const searchTitle = this.search.toLowerCase();
+            
             if (this.searchIssue) {
-                const searchIssue = parseInt(this.searchIssue);
+                const searchIssue = `#${parseInt(this.searchIssue.trim())}`;
                 this.productsFiltered = this.allProducts.filter(product =>
-                    product.issue === searchIssue
+                    product.title.toLowerCase().includes(searchTitle) && product.issue === searchIssue
                 );
             } else {
                 this.productsFiltered = this.allProducts.filter(product =>
-                    product.title.toLowerCase().includes(this.search.toLowerCase())
+                    product.title.toLowerCase().includes(searchTitle)
                 );
 
                 if (this.productsFiltered.length === 1) {
-                    this.searchIssue = this.productsFiltered[0].issue.toString();
+                    this.searchIssue = this.productsFiltered[0].issue.replace("#", ""); 
                 }
             }
-
         },
 
         toggleProductSelection(product) {
             this.arrayProduct = [product];
-            console.log(this.arrayProduct, 'aqui o arrayProduct');
+            console.log(this.arrayProduct, 'retorno do arrayProduct');
         }
     }
 
