@@ -27,3 +27,9 @@ npm run dev
 ```sh
 npm run build
 ```
+
+### To run json file
+
+```sh
+ json-server --watch product.json
+```
