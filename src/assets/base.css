@@ -76,6 +76,6 @@ body {
 } */
 
 
-body {
-  background-color: red;
+.modal-header, .modal-footer{
+  border: none !important;
 }

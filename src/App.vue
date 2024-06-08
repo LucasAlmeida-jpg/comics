@@ -1,23 +1,37 @@
 <template>
   <div>
-    <Home />
+    <Modal :allProducts="products" />
   </div>
   <RouterView />
 
 </template>
 
 <script>
-import Home from "./components/Home.vue";
-
+import Modal from "@/components/Modal.vue";
+import axios from 'axios';
 export default {
   components: {
-    Home
+    Modal
   },
   data() {
     return {
-      teste: ''
+      products: []
+
     }
-  }
+  },
+  
+  mounted() {
+        axios.get('http://localhost:3000/comics')
+            .then(response => {
+                if (response.data && Array.isArray(response.data)) {
+                    this.products = response.data;
+                    console.log(this.products, 'aqyu');
+                }
+            })
+            .catch(error => {
+                console.error('Erro ao carregar dados do produto:', error);
+            });
+    },
 
 };
 </script>
