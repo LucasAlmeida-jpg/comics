@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Modal :allProducts="products" />
+    <Modal />
   </div>
 </template>
 
@@ -17,18 +17,6 @@ export default {
     };
   },
 
-  mounted() {
-        axios.get('http://localhost:3000/comics')
-            .then(response => {
-                if (response.data && Array.isArray(response.data)) {
-                    this.products = response.data;
-                    console.log(this.products, 'aqyu');
-                }
-            })
-            .catch(error => {
-                console.error('Erro ao carregar dados do produto:', error);
-            });
-    },
 };
 </script>
 

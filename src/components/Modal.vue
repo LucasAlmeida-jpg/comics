@@ -74,8 +74,8 @@
                         <div class="card col-md-5" v-for="i in arrayProduct">
                             <div class="d-flex gap-3 align-items-center ">
                                 <div>
-                                    <img class="thumb-product" :src="i.cover_image_original_url"
-                                        alt="product cover_image_original_url">
+                                    <img class="thumb-product" :src="i.image_url"
+                                        alt="product image_url">
                                 </div>
                                 <div>
                                     <h5>{{ i.title }} {{ i.issue }}</h5>
@@ -97,19 +97,31 @@
 </template>
 
 <script>
-
-
+import axios from 'axios';
 export default {
-    props: ['allProducts'],
     data() {
         return {
             product: [],
             search: '',
             searchIssue: '',
             productsFiltered: [],
-            arrayProduct: []
+            arrayProduct: [],
+            products: []
 
         };
+    },
+
+    mounted() {
+        axios.get('http://localhost:3000/comics')
+            .then(response => {
+                if (response.data && Array.isArray(response.data)) {
+                    this.products = response.data;
+                    console.log('retorno da api no componente pai:', this.products );
+                }
+            })
+            .catch(error => {
+                console.error('Erro ao carregar dados do produto:', error);
+            });
     },
 
     computed: {
@@ -129,11 +141,11 @@ export default {
             
             if (this.searchIssue) {
                 const searchIssue = `#${parseInt(this.searchIssue.trim())}`;
-                this.productsFiltered = this.allProducts.filter(product =>
+                this.productsFiltered = this.products.filter(product =>
                     product.title.toLowerCase().includes(searchTitle) && product.issue === searchIssue
                 );
             } else {
-                this.productsFiltered = this.allProducts.filter(product =>
+                this.productsFiltered = this.products.filter(product =>
                     product.title.toLowerCase().includes(searchTitle)
                 );
 
