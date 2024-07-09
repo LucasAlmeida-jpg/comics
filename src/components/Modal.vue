@@ -18,8 +18,8 @@
                                 <div class="d-flex gap-2">
                                     <input v-model="search" class="form-control" type="text"
                                         aria-label="default input example">
-                                    <input v-model="searchIssue" class="form-control" type="text"
-                                        aria-label="default input example">
+                                    <!-- <input v-model="searchIssue" class="form-control" type="text"
+                                        aria-label="default input example"> -->
                                     <img role="button" @click="searchProducts" src="./icons/search.svg"
                                         alt="icon search">
                                 </div>
@@ -74,7 +74,7 @@
                         <div class="card col-md-5" v-for="i in arrayProduct">
                             <div class="d-flex gap-3 align-items-center ">
                                 <div>
-                                    <img class="thumb-product" :src="i.image_url"
+                                    <img class="thumb-product" :src="i.cover_image_original_url"
                                         alt="product image_url">
                                 </div>
                                 <div>
@@ -112,16 +112,7 @@ export default {
     },
 
     mounted() {
-        axios.get('http://localhost:3000/comics')
-            .then(response => {
-                if (response.data && Array.isArray(response.data)) {
-                    this.products = response.data;
-                    console.log('retorno da api no componente pai:', this.products );
-                }
-            })
-            .catch(error => {
-                console.error('Erro ao carregar dados do produto:', error);
-            });
+        //
     },
 
     computed: {
@@ -138,21 +129,32 @@ export default {
     methods: {
         searchProducts() {
             const searchTitle = this.search.toLowerCase();
-            
-            if (this.searchIssue) {
-                const searchIssue = `#${parseInt(this.searchIssue.trim())}`;
-                this.productsFiltered = this.products.filter(product =>
-                    product.title.toLowerCase().includes(searchTitle) && product.issue === searchIssue
-                );
-            } else {
-                this.productsFiltered = this.products.filter(product =>
-                    product.title.toLowerCase().includes(searchTitle)
-                );
 
-                if (this.productsFiltered.length === 1) {
-                    this.searchIssue = this.productsFiltered[0].issue.replace("#", ""); 
+            axios.get('http://ec2-54-242-182-68.compute-1.amazonaws.com/api/issues/search?q=' + searchTitle)
+            .then(response => {
+                if (response.data && Array.isArray(response.data)) {
+                    this.productsFiltered = response.data;
+                    console.log('retorno da api no componente pai:', this.products );
                 }
-            }
+            })
+            .catch(error => {
+                console.error('Erro ao carregar dados do produto:', error);
+            });
+            
+            // if (this.searchIssue) {
+            //     const searchIssue = `#${parseInt(this.searchIssue.trim())}`;
+            //     this.productsFiltered = this.products.filter(product =>
+            //         product.title.toLowerCase().includes(searchTitle) && product.issue === searchIssue
+            //     );
+            // } else {
+            //     this.productsFiltered = this.products.filter(product =>
+            //         product.title.toLowerCase().includes(searchTitle)
+            //     );
+
+            //     if (this.productsFiltered.length === 1) {
+            //         this.searchIssue = this.productsFiltered[0].issue.replace("#", ""); 
+            //     }
+            // }
         },
 
         toggleProductSelection(product) {
